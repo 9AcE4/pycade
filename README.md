@@ -1,0 +1,2 @@
+# pycade
+A retro-style arcade environment built with Python.
