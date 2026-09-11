@@ -4,9 +4,11 @@
 #-----------------------------
 import pygame
 
-from engine.window import create_window
 from engine.controls import handle_global_events
+from engine.window import create_window
+from ui.splash import Splash
 #-----------------------------
+
 
 #=============================#
 # MAIN FUNCTION               #
@@ -17,12 +19,22 @@ def main():
 
     window, logical_surface = create_window()
 
+    splash = Splash()
+
+    # Temporary:
+    # Later this will only be called after
+    # scores, settings and other startup data
+    # have actually finished loading.
+    splash.set_ready()
+
     running = True
+    clock = pygame.time.Clock()
 
     while running:
         running = handle_global_events()
 
-        logical_surface.fill((0, 0, 0))
+        splash.update()
+        splash.draw(logical_surface)
 
         pygame.transform.scale(
             logical_surface,
@@ -32,8 +44,11 @@ def main():
 
         pygame.display.flip()
 
+        clock.tick(60)
+
     pygame.quit()
 #-----------------------------
+
 
 #=============================#
 # ENTRY POINT                 #
