@@ -26,8 +26,11 @@ LOGO_Y = 21
 PANEL_Y = 108
 PANEL_ROWS = 16
 
-LEFT_PANEL_COLUMNS = 28
-RIGHT_PANEL_COLUMNS = 60
+NARROW_PANEL_COLUMNS = 28
+WIDE_PANEL_COLUMNS = 60
+
+LEFT_PANEL_COLUMNS = NARROW_PANEL_COLUMNS
+RIGHT_PANEL_COLUMNS = WIDE_PANEL_COLUMNS
 
 PANEL_GAP = 12
 
@@ -36,34 +39,43 @@ FOOTER_Y = 338
 
 
 #=============================#
-# PANEL POSITIONS             #
+# PANEL WIDTH                 #
 #=============================#
 #-----------------------------
-def get_panel_positions(surface):
+def get_panel_width(columns):
     frame_font = pygame.font.SysFont(
         FONT_NAME,
         FRAME_FONT_SIZE
     )
 
-    left_top = (
+    top_line = (
         DOUBLE["top_left"]
-        + DOUBLE["horizontal"] * (LEFT_PANEL_COLUMNS - 2)
+        + DOUBLE["horizontal"] * (columns - 2)
         + DOUBLE["top_right"]
     )
 
-    right_top = (
-        DOUBLE["top_left"]
-        + DOUBLE["horizontal"] * (RIGHT_PANEL_COLUMNS - 2)
-        + DOUBLE["top_right"]
+    return frame_font.size(
+        top_line
+    )[0]
+#-----------------------------
+
+
+#=============================#
+# PANEL POSITIONS             #
+#=============================#
+#-----------------------------
+def get_panel_positions(
+    surface,
+    left_columns=LEFT_PANEL_COLUMNS,
+    right_columns=RIGHT_PANEL_COLUMNS
+):
+    left_width = get_panel_width(
+        left_columns
     )
 
-    left_width = frame_font.size(
-        left_top
-    )[0]
-
-    right_width = frame_font.size(
-        right_top
-    )[0]
+    right_width = get_panel_width(
+        right_columns
+    )
 
     total_width = (
         left_width

@@ -25,6 +25,7 @@ REQUIRED_GAME_FILES = (
 REQUIRED_META_FIELDS = (
     "title",
     "description",
+    "playable",
 )
 #-----------------------------
 
@@ -38,6 +39,7 @@ class GameEntry:
     game_id: str
     title: str
     description: str
+    playable: bool
     start_module: str
 #-----------------------------
 
@@ -100,6 +102,10 @@ def load_game_meta(game_id):
                 f"meta field '{field}'."
             )
 
+    for field in (
+        "title",
+        "description",
+    ):
         value = game_meta[field]
 
         if not isinstance(
@@ -116,6 +122,15 @@ def load_game_meta(game_id):
                 f"Meta field '{field}' in game "
                 f"'{game_id}' must not be empty."
             )
+
+    if not isinstance(
+        game_meta["playable"],
+        bool
+    ):
+        raise ValueError(
+            f"Meta field 'playable' in game "
+            f"'{game_id}' must be a boolean."
+        )
 
     return game_meta
 #-----------------------------
@@ -149,6 +164,9 @@ def load_game_catalog():
                 description=game_meta[
                     "description"
                 ].strip(),
+                playable=game_meta[
+                    "playable"
+                ],
                 start_module=(
                     f"games.{game_id}.start"
                 )
