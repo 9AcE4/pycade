@@ -4,10 +4,8 @@
 #-----------------------------
 import pygame
 
-from ascii.logos import PYCADE_LOGO
+from ui.rendering import draw_pycade_logo
 from ui.themes import DEFAULT_THEME
-from ui.themes import PYCADE_GRADIENT
-from ui.themes import PYCADE_GRADIENT_SPEED
 from ui.themes import THEMES
 #-----------------------------
 
@@ -149,87 +147,18 @@ def draw_splash_2(
         exit_alpha
     )
 
-    logo_lines = (
-        PYCADE_LOGO
-        .strip("\n")
-        .splitlines()
-    )
-
-    font = pygame.font.SysFont(
+    draw_pycade_logo(
+        surface,
+        surface.get_width() // 2,
+        (
+            surface.get_height() // 2
+            - 33
+        ),
+        elapsed_ms,
         LOGO_FONT_NAME,
-        LOGO_FONT_SIZE
+        LOGO_FONT_SIZE,
+        final_alpha
     )
-
-    char_width = font.size("M")[0]
-    line_height = font.get_linesize()
-
-    max_line_length = max(
-        len(line)
-        for line in logo_lines
-    )
-
-    logo_width = (
-        max_line_length
-        * char_width
-    )
-
-    logo_height = (
-        len(logo_lines)
-        * line_height
-    )
-
-    start_x = (
-        surface.get_width()
-        - logo_width
-    ) // 2
-
-    start_y = (
-        surface.get_height()
-        - logo_height
-    ) // 2
-
-    for row, line in enumerate(logo_lines):
-        y = (
-            start_y
-            + row * line_height
-        )
-
-        for column, character in enumerate(line):
-            if character == " ":
-                continue
-
-            x = (
-                start_x
-                + column * char_width
-            )
-
-            gradient_position = (
-                column
-                / max(
-                    1,
-                    max_line_length
-                )
-            )
-
-            color = get_gradient_color(
-                gradient_position,
-                elapsed_ms
-            )
-
-            character_surface = font.render(
-                character,
-                True,
-                color
-            )
-
-            character_surface.set_alpha(
-                final_alpha
-            )
-
-            surface.blit(
-                character_surface,
-                (x, y)
-            )
 
 
 def draw_press_enter(
@@ -275,69 +204,6 @@ def get_logo_alpha(elapsed_ms):
     return int(
         255 * progress
     )
-
-
-def get_gradient_color(position, elapsed_ms):
-    phase = (
-        position
-        + elapsed_ms * PYCADE_GRADIENT_SPEED
-    ) % 1.0
-
-    color_count = len(
-        PYCADE_GRADIENT
-    )
-
-    scaled_position = (
-        phase
-        * color_count
-    )
-
-    index_a = (
-        int(scaled_position)
-        % color_count
-    )
-
-    index_b = (
-        index_a + 1
-    ) % color_count
-
-    blend = (
-        scaled_position
-        - int(scaled_position)
-    )
-
-    color_a = PYCADE_GRADIENT[index_a]
-    color_b = PYCADE_GRADIENT[index_b]
-
-    red = int(
-        color_a[0]
-        + (
-            color_b[0]
-            - color_a[0]
-        ) * blend
-    )
-
-    green = int(
-        color_a[1]
-        + (
-            color_b[1]
-            - color_a[1]
-        ) * blend
-    )
-
-    blue = int(
-        color_a[2]
-        + (
-            color_b[2]
-            - color_a[2]
-        ) * blend
-    )
-
-    return (
-        red,
-        green,
-        blue
-    )
 #-----------------------------
 
 
@@ -360,7 +226,7 @@ class Splash:
     def set_ready(self):
         self.ready = True
 
-    def update(self):
+    def update(self, events):
         if self.finished:
             return
 
@@ -388,10 +254,15 @@ class Splash:
         if (
             press_enter_visible
             and not self.exit_requested
-            and pygame.key.get_pressed()[pygame.K_RETURN]
         ):
-            self.exit_requested = True
-            self.exit_start_time = current_time
+            for event in events:
+                if (
+                    event.type == pygame.KEYDOWN
+                    and event.key == pygame.K_RETURN
+                ):
+                    self.exit_requested = True
+                    self.exit_start_time = current_time
+                    break
 
         if self.exit_requested:
             exit_elapsed = (

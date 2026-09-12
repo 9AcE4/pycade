@@ -6,6 +6,7 @@ import pygame
 
 from engine.controls import handle_global_events
 from engine.window import create_window
+from ui.hub.mainscreen import MainScreen
 from ui.splash import Splash
 #-----------------------------
 
@@ -20,6 +21,7 @@ def main():
     window, logical_surface = create_window()
 
     splash = Splash()
+    main_screen = MainScreen()
 
     # Temporary:
     # Later this will only be called after
@@ -31,10 +33,29 @@ def main():
     clock = pygame.time.Clock()
 
     while running:
-        running = handle_global_events()
+        events = pygame.event.get()
 
-        splash.update()
-        splash.draw(logical_surface)
+        running = handle_global_events(
+            events
+        )
+
+        if not running:
+            break
+
+        if splash.is_finished():
+            main_screen.update(
+                events
+            )
+            main_screen.draw(
+                logical_surface
+            )
+        else:
+            splash.update(
+                events
+            )
+            splash.draw(
+                logical_surface
+            )
 
         pygame.transform.scale(
             logical_surface,
