@@ -43,9 +43,14 @@ def main():
             break
 
         if splash.is_finished():
-            main_screen.update(
+            action = main_screen.update(
                 events
             )
+
+            if action == "EXIT":
+                running = False
+                break
+
             main_screen.draw(
                 logical_surface
             )

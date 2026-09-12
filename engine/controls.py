@@ -34,10 +34,6 @@ def handle_global_events(events):
         if event.type == pygame.QUIT:
             return False
 
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_ESCAPE:
-                return False
-
         if event.type == pygame.MOUSEBUTTONDOWN:
             if event.button == 1:
                 dragging = True
@@ -97,4 +93,35 @@ def get_menu_navigation(events):
                 navigation += 1
 
     return navigation
+#-----------------------------
+
+
+#=============================#
+# MENU CONFIRM                #
+#=============================#
+#-----------------------------
+def get_menu_confirm(events):
+    for event in events:
+        if event.type == pygame.KEYDOWN:
+            if event.key in (
+                pygame.K_RETURN,
+                pygame.K_KP_ENTER
+            ):
+                return True
+
+    return False
+#-----------------------------
+
+
+#=============================#
+# MENU BACK                   #
+#=============================#
+#-----------------------------
+def get_menu_back(events):
+    for event in events:
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_ESCAPE:
+                return True
+
+    return False
 #-----------------------------

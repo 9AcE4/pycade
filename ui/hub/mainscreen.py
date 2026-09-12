@@ -5,6 +5,7 @@
 import pygame
 
 from ascii.frames import DOUBLE
+from engine.controls import get_menu_confirm
 from engine.controls import get_menu_navigation
 from ui.hub.previews.about_preview import draw_about_preview
 from ui.hub.previews.exit_preview import draw_exit_preview
@@ -75,6 +76,19 @@ class MainScreen:
         self.selected_index = (
             self.selected_index + navigation
         ) % len(MENU_ITEMS)
+
+        confirm = get_menu_confirm(
+            events
+        )
+
+        if confirm:
+            selected_item = MENU_ITEMS[
+                self.selected_index
+            ]
+
+            return selected_item
+
+        return None
 
     def draw(self, surface):
         surface.fill(
