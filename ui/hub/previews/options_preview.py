@@ -26,7 +26,8 @@ def draw_options_preview(
     theme,
     font_name,
     title_font_size,
-    text_font_size
+    text_font_size,
+    _animation_elapsed_ms
 ):
     draw_text(
         surface,

@@ -223,7 +223,8 @@ def draw_games_preview(
     theme,
     font_name,
     title_font_size,
-    text_font_size
+    text_font_size,
+    animation_elapsed_ms
 ):
     draw_text(
         surface,
@@ -256,6 +257,6 @@ def draw_games_preview(
         theme,
         font_name,
         text_font_size,
-        pygame.time.get_ticks()
+        animation_elapsed_ms
     )
 #-----------------------------
