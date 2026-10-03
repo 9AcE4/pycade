@@ -72,9 +72,9 @@ class PyCadeCoordinator:
         self.running = True
 
     def run(self):
-        self.setup()
-
         try:
+            self.setup()
+
             while self.running:
                 hub_was_drawn = self.run_frame()
 
@@ -90,6 +90,7 @@ class PyCadeCoordinator:
                     )
 
         finally:
+            self.running = False
             pygame.quit()
 #-----------------------------
 
