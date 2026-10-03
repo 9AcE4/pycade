@@ -7,7 +7,8 @@ für einen Terminal-Look. Sie läuft in einem Pygame-Fenster.
 ## Technologien
 
 - Python
-- Pygame für Fenster, Eingaben, Darstellung und Zeitsteuerung
+- pygame-ce für Fenster, Eingaben, Darstellung und Zeitsteuerung;
+  der Python-Importname bleibt `pygame`
 - Python-Standardbibliothek, unter anderem `dataclasses`, `importlib`, `pathlib`
   und `textwrap`
 
@@ -35,6 +36,7 @@ Vorschautexte; ihre Bestätigung öffnet keinen weiteren Bildschirm.
 PyCade/
 ├── README.md                  Projektbeschreibung und aktueller Stand
 ├── .gitignore
+├── pyproject.toml             Projektmetadaten, Dependencies und Packaging
 ├── pycade.py                  Einstiegspunkt
 ├── coordinator.py             Zentraler Programmablauf und Hauptschleife
 ├── assets/fonts/              Mitgelieferte Liberation Mono und Lizenz
@@ -113,24 +115,52 @@ Das zurückgegebene Objekt muss `update(events)` und `draw(surface)` anbieten.
 Die Eingaben und Darstellung bleiben damit in die gemeinsame Hauptschleife
 eingebunden. Snake ist derzeit als startbar markiert, öffnet aber nur sein Menü.
 
-## Start in einer vorhandenen Python/Pygame-Umgebung
+## Installation und Start
 
-Voraussetzung ist eine vorhandene Python-Umgebung, in der Pygame verfügbar ist.
-Starte aus dem Projektordner:
+`pyproject.toml` ist die zentrale Projektkonfiguration. Python **>=3.11** ist
+eine bewusst gewählte Support-Grenze, keine nachgewiesene technische
+Mindestversion des Anwendungscodes. Die einzige externe Runtime-Abhängigkeit
+ist **pygame-ce >=2.5.8,<3**. Tatsächlich getestet wurden pygame-ce **2.5.8**
+und Python **3.14.7** unter Omarchy/Linux; der Versionsbereich bedeutet nicht,
+dass jede darin enthaltene Version bereits geprüft wurde.
+
+Erstelle im Projektordner eine virtuelle Umgebung ohne Systempakete:
+
+| Schritt | Linux (Bash) | Windows (PowerShell) |
+|---|---|---|
+| Umgebung erstellen | `python3 -m venv .venv` | `py -m venv .venv` |
+| Aktivieren | `source .venv/bin/activate` | `.\.venv\Scripts\Activate.ps1` |
+
+Verwende dabei einen Python-Interpreter innerhalb der Support-Grenze.
+Nach der Aktivierung sind die Befehle auf beiden Plattformen gleich:
 
 ```bash
-python pycade.py
+python -m pip install .
+python -m pip check
+pycade
 ```
 
-Der Befehl `python` muss auf diese Umgebung verweisen. Falls er unter Linux
-`python3` heißt, verwende entsprechend `python3 pycade.py`.
+Der installierte Konsolenbefehl `pycade` ruft `main()` aus `pycade.py` auf und
+kann auch außerhalb des Projektordners verwendet werden. Schrift und Lizenz
+werden als Paketdaten mitinstalliert. Setuptools wird beim Build benötigt,
+ist aber keine zusätzliche Runtime-Abhängigkeit.
 
-Optional kann für Tests ohne Python-Bytecode-Erzeugung `python -B pycade.py`
-verwendet werden.
+Installiere **pygame und pygame-ce nicht gemeinsam in derselben virtuellen
+Umgebung**, da beide den Importnamen `pygame` bereitstellen. Verwende für den
+neuen Installationsweg eine frische venv; das systemweite Arch-Paket wird dafür
+nicht benötigt. Alternativ lässt sich nach der Installation weiterhin
+`python -B pycade.py` aus dem Projektordner starten; `-B` verhindert die
+Erzeugung von Python-Bytecode-Dateien.
 
-Packaging und `pyproject.toml` sind noch nicht umgesetzt. Es gibt bislang keine
-zentral deklarierte Dependency-Konfiguration, festgelegten Versionsanforderungen
-oder installierbaren Startbefehl.
+Für einen Distributionsbuild kann das Entwicklungswerkzeug `build` in einer
+separaten Build-venv installiert werden. `python -m build` erzeugt Quellarchiv
+(sdist) und Wheel unter `dist/`. Für einen Installationstest wird das Wheel
+in einer weiteren frischen venv mit `python -m pip install <Wheel-Datei>`
+installiert. Prüfe danach `python -m pip check` und starte `pycade` aus einem
+anderen Arbeitsverzeichnis, damit der Checkout keine fehlenden Dateien verdeckt.
+
+Windows bleibt Zielplattform, wurde für diesen Packaging-Stand aber noch
+nicht praktisch verifiziert.
 
 ## Plattformstand und bisherige Prüfung
 
@@ -173,6 +203,38 @@ Diese Prüfungen waren erfolgreich. Der Benutzer hat anschließend auch die neue
 Schrift unter Omarchy/Linux sichtbar getestet und bestätigt, dass PyCade
 weiterhin funktioniert. Eine Windows-Prüfung steht noch aus.
 
+## Prüfung des Packaging-Stands
+
+Am 03.10.2026 wurden unter Omarchy/Linux mit Python **3.14.7** und
+pygame-ce **2.5.8** folgende Prüfungen erfolgreich durchgeführt:
+
+- Syntax aller 37 Python-Dateien und `git diff --check`
+- Build von sdist und Wheel mit Setuptools 84.0.0 und `build` 1.6.1
+- Wheel enthält alle 37 Python-Dateien, Schrift und Lizenz, die Dependency
+  `pygame-ce>=2.5.8,<3`, Python-Support-Grenze `>=3.11` und `pycade:main`
+- sdist enthält die notwendigen Quellen und Ressourcen; ein daraus erneut
+  gebautes Wheel hat dieselben Dateiinhalte
+- Installation des Wheels samt pygame-ce aus einem fertigen CPython-3.14-Wheel
+  in einer neuen venv mit `include-system-site-packages = false`
+- `pip check` ohne Dependency-Probleme
+- Prüfung außerhalb des Repositorys mit Python-Isolationsmodus: alle
+  Modulimporte stammen aus der Test-venv, ebenso der `pygame`-Import von
+  pygame-ce; Font und Lizenz sind im installierten Paket vorhanden
+- Headless-Prüfung von Font-Zeichen und Darstellung, Layout, Spielekatalog,
+  Splash/Enter, allen Hauptmenüvorschauen, Spielebibliothek, Snake-Menü,
+  Escape, EXIT, QUIT und Cleanup bei einem Initialisierungsfehler
+- Installierter Entry Point und erzeugter `pycade`-Launcher funktionieren;
+  der Launcher wurde mit SDL-Dummy-Treiber und kontrolliertem QUIT ausgeführt
+
+Der Build wurde in einer temporären Projektkopie durchgeführt, mit getrennten
+Build- und Installations-venvs. Für den Build wurden die Build-Abhängigkeiten
+vorab in der Build-venv installiert und `python -m build --no-isolation`
+verwendet. Die Navigationstests verkürzten die Splash-Wartezeiten.
+Es wurde kein sichtbares Fenster gestartet. Die sichtbare Prüfung dieses
+Packaging-/pygame-ce-Stands und eine praktische Windows-Prüfung stehen aus.
+Die Prüfskripte waren einmalig; eine dauerhaft hinterlegte Testsuite wurde
+dadurch nicht eingeführt.
+
 ## Offene Bereiche
 
 - **Snake:** Eigentliche Spielmechanik, PLAY und OPTIONS fehlen.
@@ -181,7 +243,5 @@ weiterhin funktioniert. Eine Windows-Prüfung steht noch aus.
 - **Options:** Es gibt nur einen Vorschautext, keine Einstellungsoberfläche oder
   Speicherung. Farbthemen sind im Code definiert.
 - **About:** Es gibt nur einen Vorschautext, keinen eigenen Informationsbildschirm.
-- **Packaging:** `pyproject.toml`, deklarierte Dependencies und ein standardisierter
-  Installationsweg fehlen.
 - **Tests:** Eine dauerhaft hinterlegte Testsuite und CI fehlen;
   eine Windows-Laufzeitprüfung steht aus.

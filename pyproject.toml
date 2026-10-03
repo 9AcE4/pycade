@@ -1,0 +1,35 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pycade"
+version = "0.1.0"
+description = "Modular retro arcade application using Pygame"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = ["pygame-ce>=2.5.8,<3"]
+
+[project.scripts]
+pycade = "pycade:main"
+
+[tool.setuptools]
+py-modules = ["pycade", "coordinator"]
+include-package-data = false
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = [
+    "ascii", "ascii.*",
+    "engine", "engine.*",
+    "ui", "ui.*",
+    "games", "games.*",
+    "assets", "assets.fonts",
+]
+namespaces = false
+
+[tool.setuptools.package-data]
+"assets.fonts" = [
+    "LiberationMono-Regular.ttf",
+    "LICENSE.txt",
+]
