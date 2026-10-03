@@ -11,7 +11,7 @@ from engine.controls import get_menu_back
 from engine.controls import get_menu_confirm
 from engine.controls import get_menu_navigation
 from games.catalog import load_game_catalog
-from ui.layout import FONT_NAME
+from ui.layout import FONT_PATH
 from ui.layout import FOOTER_FONT_SIZE
 from ui.layout import FOOTER_Y
 from ui.layout import FRAME_FONT_SIZE
@@ -131,7 +131,7 @@ class GameSelectionScreen:
             surface.get_width() // 2,
             LOGO_Y,
             elapsed_ms,
-            FONT_NAME,
+            FONT_PATH,
             LOGO_FONT_SIZE
         )
 
@@ -168,7 +168,7 @@ class GameSelectionScreen:
             PANEL_ROWS,
             self.theme["primary"],
             DOUBLE,
-            FONT_NAME,
+            FONT_PATH,
             FRAME_FONT_SIZE
         )
 
@@ -180,7 +180,7 @@ class GameSelectionScreen:
                 PANEL_Y + 17
             ),
             self.theme["secondary"],
-            FONT_NAME,
+            FONT_PATH,
             TEXT_FONT_SIZE
         )
 
@@ -193,7 +193,7 @@ class GameSelectionScreen:
                     PANEL_Y + 50
                 ),
                 self.theme["primary"],
-                FONT_NAME,
+                FONT_PATH,
                 TEXT_FONT_SIZE
             )
 
@@ -244,7 +244,7 @@ class GameSelectionScreen:
                     * GAME_ITEM_SPACING
                 ),
                 color,
-                FONT_NAME,
+                FONT_PATH,
                 MENU_FONT_SIZE
             )
 #-----------------------------
@@ -267,7 +267,7 @@ class GameSelectionScreen:
             PANEL_ROWS,
             self.theme["primary"],
             DOUBLE,
-            FONT_NAME,
+            FONT_PATH,
             FRAME_FONT_SIZE
         )
 
@@ -279,7 +279,7 @@ class GameSelectionScreen:
                 PANEL_Y + 17
             ),
             self.theme["secondary"],
-            FONT_NAME,
+            FONT_PATH,
             TEXT_FONT_SIZE
         )
 
@@ -294,7 +294,7 @@ class GameSelectionScreen:
                     PANEL_Y + 50
                 ),
                 self.theme["primary"],
-                FONT_NAME,
+                FONT_PATH,
                 TEXT_FONT_SIZE
             )
 
@@ -308,7 +308,7 @@ class GameSelectionScreen:
                 PANEL_Y + 50
             ),
             self.theme["accent"],
-            FONT_NAME,
+            FONT_PATH,
             TITLE_FONT_SIZE
         )
 
@@ -320,7 +320,7 @@ class GameSelectionScreen:
                 PANEL_Y + 82
             ),
             self.theme["secondary"],
-            FONT_NAME,
+            FONT_PATH,
             TEXT_FONT_SIZE
         )
 
@@ -345,7 +345,7 @@ class GameSelectionScreen:
                     * DESCRIPTION_LINE_SPACING
                 ),
                 self.theme["primary"],
-                FONT_NAME,
+                FONT_PATH,
                 TEXT_FONT_SIZE
             )
 #-----------------------------
@@ -408,7 +408,7 @@ class GameSelectionScreen:
                 FOOTER_Y
             ),
             self.theme["secondary"],
-            FONT_NAME,
+            FONT_PATH,
             FOOTER_FONT_SIZE,
             center=True
         )

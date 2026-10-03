@@ -4,6 +4,8 @@
 #-----------------------------
 import pygame
 
+from ui.fonts import load_font
+
 from ascii.logos import PYCADE_LOGO
 from ui.themes import PYCADE_GRADIENT
 from ui.themes import PYCADE_GRADIENT_SPEED
@@ -19,12 +21,12 @@ def draw_text(
     text,
     position,
     color,
-    font_name,
+    font_path,
     font_size,
     center=False
 ):
-    font = pygame.font.SysFont(
-        font_name,
+    font = load_font(
+        font_path,
         font_size
     )
 
@@ -60,11 +62,11 @@ def draw_box(
     rows,
     color,
     frame,
-    font_name,
+    font_path,
     font_size
 ):
-    font = pygame.font.SysFont(
-        font_name,
+    font = load_font(
+        font_path,
         font_size
     )
 
@@ -123,7 +125,7 @@ def draw_pycade_logo(
     center_x,
     top_y,
     elapsed_ms,
-    font_name,
+    font_path,
     font_size,
     alpha=255
 ):
@@ -133,8 +135,8 @@ def draw_pycade_logo(
         .splitlines()
     )
 
-    font = pygame.font.SysFont(
-        font_name,
+    font = load_font(
+        font_path,
         font_size
     )
 

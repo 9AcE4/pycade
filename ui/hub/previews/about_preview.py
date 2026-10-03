@@ -24,7 +24,7 @@ def draw_about_preview(
     panel_x,
     panel_y,
     theme,
-    font_name,
+    font_path,
     title_font_size,
     text_font_size,
     _animation_elapsed_ms
@@ -37,7 +37,7 @@ def draw_about_preview(
             panel_y + 17
         ),
         theme["accent"],
-        font_name,
+        font_path,
         title_font_size
     )
 
@@ -49,7 +49,7 @@ def draw_about_preview(
             panel_y + 61
         ),
         theme["primary"],
-        font_name,
+        font_path,
         text_font_size
     )
 #-----------------------------

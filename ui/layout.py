@@ -2,7 +2,7 @@
 # IMPORTS                     #
 #=============================#
 #-----------------------------
-import pygame
+from ui.fonts import FONT_PATH, load_font
 
 from ascii.frames import DOUBLE
 #-----------------------------
@@ -12,8 +12,6 @@ from ascii.frames import DOUBLE
 # SHARED UI CONFIG            #
 #=============================#
 #-----------------------------
-FONT_NAME = "consolas"
-
 LOGO_FONT_SIZE = 8
 FRAME_FONT_SIZE = 11
 MENU_FONT_SIZE = 14
@@ -43,8 +41,8 @@ FOOTER_Y = 338
 #=============================#
 #-----------------------------
 def get_panel_width(columns):
-    frame_font = pygame.font.SysFont(
-        FONT_NAME,
+    frame_font = load_font(
+        FONT_PATH,
         FRAME_FONT_SIZE
     )
 

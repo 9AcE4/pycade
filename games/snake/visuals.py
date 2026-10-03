@@ -5,7 +5,7 @@
 import pygame
 
 from ascii.frames import DOUBLE
-from ui.layout import FONT_NAME
+from ui.layout import FONT_PATH
 from ui.layout import FOOTER_FONT_SIZE
 from ui.layout import FOOTER_Y
 from ui.layout import FRAME_FONT_SIZE
@@ -58,7 +58,7 @@ def draw_snake_menu(
         surface.get_width() // 2,
         LOGO_Y,
         elapsed_ms,
-        FONT_NAME,
+        FONT_PATH,
         LOGO_FONT_SIZE
     )
 
@@ -70,7 +70,7 @@ def draw_snake_menu(
         PANEL_ROWS,
         theme["primary"],
         DOUBLE,
-        FONT_NAME,
+        FONT_PATH,
         FRAME_FONT_SIZE
     )
 
@@ -82,7 +82,7 @@ def draw_snake_menu(
         PANEL_ROWS,
         theme["primary"],
         DOUBLE,
-        FONT_NAME,
+        FONT_PATH,
         FRAME_FONT_SIZE
     )
 
@@ -94,7 +94,7 @@ def draw_snake_menu(
             PANEL_Y + 17
         ),
         theme["secondary"],
-        FONT_NAME,
+        FONT_PATH,
         TEXT_FONT_SIZE
     )
 
@@ -106,7 +106,7 @@ def draw_snake_menu(
             PANEL_Y + 50
         ),
         theme["accent"],
-        FONT_NAME,
+        FONT_PATH,
         TITLE_FONT_SIZE
     )
 
@@ -118,7 +118,7 @@ def draw_snake_menu(
             PANEL_Y + 17
         ),
         theme["secondary"],
-        FONT_NAME,
+        FONT_PATH,
         TEXT_FONT_SIZE
     )
 
@@ -153,7 +153,7 @@ def draw_snake_menu(
                 start_y + index * 27
             ),
             color,
-            FONT_NAME,
+            FONT_PATH,
             MENU_FONT_SIZE
         )
 
@@ -171,7 +171,7 @@ def draw_snake_menu(
             FOOTER_Y
         ),
         theme["secondary"],
-        FONT_NAME,
+        FONT_PATH,
         FOOTER_FONT_SIZE,
         center=True
     )

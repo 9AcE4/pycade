@@ -12,7 +12,7 @@ from ui.hub.previews.exit_preview import draw_exit_preview
 from ui.hub.previews.games_preview import draw_games_preview
 from ui.hub.previews.options_preview import draw_options_preview
 from ui.hub.previews.scores_preview import draw_scores_preview
-from ui.layout import FONT_NAME
+from ui.layout import FONT_PATH
 from ui.layout import FOOTER_FONT_SIZE
 from ui.layout import FOOTER_Y
 from ui.layout import FRAME_FONT_SIZE
@@ -107,7 +107,7 @@ class MainScreen:
             surface.get_width() // 2,
             LOGO_Y,
             elapsed_ms,
-            FONT_NAME,
+            FONT_PATH,
             LOGO_FONT_SIZE
         )
 
@@ -145,7 +145,7 @@ class MainScreen:
             PANEL_ROWS,
             self.theme["primary"],
             DOUBLE,
-            FONT_NAME,
+            FONT_PATH,
             FRAME_FONT_SIZE
         )
 
@@ -157,7 +157,7 @@ class MainScreen:
                 PANEL_Y + 17
             ),
             self.theme["secondary"],
-            FONT_NAME,
+            FONT_PATH,
             TEXT_FONT_SIZE
         )
 
@@ -190,7 +190,7 @@ class MainScreen:
                     start_y + index * 27
                 ),
                 color,
-                FONT_NAME,
+                FONT_PATH,
                 MENU_FONT_SIZE
             )
 #-----------------------------
@@ -218,7 +218,7 @@ class MainScreen:
             PANEL_ROWS,
             self.theme["primary"],
             DOUBLE,
-            FONT_NAME,
+            FONT_PATH,
             FRAME_FONT_SIZE
         )
 
@@ -231,7 +231,7 @@ class MainScreen:
             panel_x,
             PANEL_Y,
             self.theme,
-            FONT_NAME,
+            FONT_PATH,
             TITLE_FONT_SIZE,
             TEXT_FONT_SIZE,
             animation_elapsed_ms
@@ -258,7 +258,7 @@ class MainScreen:
                 FOOTER_Y
             ),
             self.theme["secondary"],
-            FONT_NAME,
+            FONT_PATH,
             FOOTER_FONT_SIZE,
             center=True
         )

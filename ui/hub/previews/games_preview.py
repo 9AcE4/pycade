@@ -4,6 +4,8 @@
 #-----------------------------
 import pygame
 
+from ui.fonts import load_font
+
 from ascii.frames import THIN
 from ui.rendering import draw_box
 from ui.rendering import draw_text
@@ -128,12 +130,12 @@ def draw_snake_demo(
     panel_x,
     panel_y,
     theme,
-    font_name,
+    font_path,
     font_size,
     elapsed_ms
 ):
-    font = pygame.font.SysFont(
-        font_name,
+    font = load_font(
+        font_path,
         font_size
     )
 
@@ -152,7 +154,7 @@ def draw_snake_demo(
         DEMO_ROWS + 2,
         theme["secondary"],
         THIN,
-        font_name,
+        font_path,
         font_size
     )
 
@@ -221,7 +223,7 @@ def draw_games_preview(
     panel_x,
     panel_y,
     theme,
-    font_name,
+    font_path,
     title_font_size,
     text_font_size,
     animation_elapsed_ms
@@ -234,7 +236,7 @@ def draw_games_preview(
             panel_y + 17
         ),
         theme["accent"],
-        font_name,
+        font_path,
         title_font_size
     )
 
@@ -246,7 +248,7 @@ def draw_games_preview(
             panel_y + 61
         ),
         theme["primary"],
-        font_name,
+        font_path,
         text_font_size
     )
 
@@ -255,7 +257,7 @@ def draw_games_preview(
         panel_x,
         panel_y,
         theme,
-        font_name,
+        font_path,
         text_font_size,
         animation_elapsed_ms
     )

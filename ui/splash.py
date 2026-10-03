@@ -4,6 +4,8 @@
 #-----------------------------
 import pygame
 
+from ui.fonts import FONT_PATH, load_font
+
 from ui.rendering import draw_pycade_logo
 from ui.themes import DEFAULT_THEME
 from ui.themes import THEMES
@@ -34,13 +36,13 @@ INTRO_DURATION = (
 def draw_splash_1(surface, elapsed_ms, theme):
     alpha = get_splash_1_alpha(elapsed_ms)
 
-    title_font = pygame.font.SysFont(
-        "consolas",
+    title_font = load_font(
+        FONT_PATH,
         INTRO_TITLE_SIZE
     )
 
-    subtitle_font = pygame.font.SysFont(
-        "consolas",
+    subtitle_font = load_font(
+        FONT_PATH,
         INTRO_SUBTITLE_SIZE
     )
 
@@ -120,7 +122,7 @@ def get_splash_1_alpha(elapsed_ms):
 # SPLASH 2 - PYCADE           #
 #=============================#
 #-----------------------------
-LOGO_FONT_NAME = "consolas"
+LOGO_FONT_PATH = FONT_PATH
 LOGO_FONT_SIZE = 11
 
 LOGO_FADE_IN = 1800
@@ -155,7 +157,7 @@ def draw_splash_2(
             - 33
         ),
         elapsed_ms,
-        LOGO_FONT_NAME,
+        LOGO_FONT_PATH,
         LOGO_FONT_SIZE,
         final_alpha
     )
@@ -166,8 +168,8 @@ def draw_press_enter(
     theme,
     alpha
 ):
-    font = pygame.font.SysFont(
-        "consolas",
+    font = load_font(
+        FONT_PATH,
         PRESS_ENTER_SIZE
     )
 

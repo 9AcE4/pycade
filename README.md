@@ -33,11 +33,11 @@ Vorschautexte; ihre Bestätigung öffnet keinen weiteren Bildschirm.
 
 ```text
 PyCade/
-├── AGENTS.md                  Arbeitsanweisungen für Coding-Agenten
 ├── README.md                  Projektbeschreibung und aktueller Stand
 ├── .gitignore
 ├── pycade.py                  Einstiegspunkt
 ├── coordinator.py             Zentraler Programmablauf und Hauptschleife
+├── assets/fonts/              Mitgelieferte Liberation Mono und Lizenz
 ├── ascii/
 │   ├── frames.py              Unicode-Rahmen
 │   └── logos.py               PyCade-Logo
@@ -56,6 +56,7 @@ PyCade/
 │       └── start.py           Noch leer
 └── ui/
     ├── layout.py              Größen, Abstände und Panelpositionen
+    ├── fonts.py               Zentraler Loader für die mitgelieferte Schrift
     ├── palette.py             Vorbereitete Spielfarben
     ├── rendering.py           Text, Rahmen und animiertes Logo
     ├── splash.py              Startbildschirm
@@ -91,6 +92,19 @@ aktivem Spielmodul.
 Alle Bildschirme zeichnen auf eine interne logische Fläche von **640 × 360**.
 Der Coordinator skaliert diese Fläche auf die Fenstergröße und zeigt sie an.
 Die Hauptschleife ist auf 60 FPS begrenzt.
+
+Alle UI-Bereiche verwenden die mitgelieferte `LiberationMono-Regular.ttf`.
+`ui/fonts.py` bestimmt den absoluten Dateipfad anhand seiner eigenen Position
+und lädt die Schrift mit `pygame.font.Font`. Installierte Systemschriften und
+das aktuelle Arbeitsverzeichnis beeinflussen die Schriftauswahl damit nicht.
+Die Schrift wird unverändert mit ihrer SIL Open Font License 1.1 unter
+`assets/fonts/LICENSE.txt` mitgeliefert. Fehlende oder beschädigte
+Schriftdateien erzeugen einen Fehler statt eines stillen Systemschrift-Fallbacks.
+
+Initialisierung und Hauptschleife liegen gemeinsam in einem `try/finally`-Block.
+Bei normalem Beenden sowie bei Fehlern während der Initialisierung oder der
+Hauptschleife setzt der Coordinator `running` auf `False` und ruft
+`pygame.quit()` auf. Fehler werden weiterhin an den Aufrufer weitergegeben.
 
 Der Spielekatalog erkennt Unterverzeichnisse mit `__init__.py`, `meta.py` und
 `start.py`. Die Metadaten enthalten Titel, Beschreibung und den Status
@@ -132,7 +146,32 @@ Snake-Vorschau funktionieren. Es traten keine Laufzeitfehler durch die entfernte
 Windows-Fenstersteuerung auf. Eine Windows-Laufzeitprüfung dieses Stands ist
 bisher nicht dokumentiert.
 
-Automatisierte Tests und eine CI-Konfiguration sind noch nicht vorhanden.
+Am 03.10.2026 wurde die Absicherung von Initialisierung und Shutdown unter
+Omarchy/Linux durch einmalige automatisierte Prüfungen mit dem SDL-Dummy-Treiber
+(ohne sichtbares Fenster) geprüft:
+
+- Start und Beenden durch ein Pygame-QUIT-Ereignis
+- Aufräumen und Weitergabe eines simulierten Fehlers bei der Fenstererstellung
+- Aufräumen und Weitergabe eines simulierten Fehlers in der Hauptschleife
+- Splashscreen mit Enter-Übergang, Spielebibliothek, Snake-Menü,
+  Pfeiltastennavigation, Escape-Rücknavigation und EXIT
+
+Die Prüfungen waren erfolgreich; die Splash-Wartezeiten wurden für den
+Navigationstest verkürzt. Der Benutzer hat anschließend die sichtbare
+Desktop-Prüfung unter Omarchy/Linux durchgeführt und einen funktionierenden
+Ablauf gemeldet. Eine Windows-Laufzeitprüfung steht weiterhin aus.
+
+Eine dauerhaft im Repository hinterlegte automatisierte Testsuite und eine
+CI-Konfiguration sind noch nicht vorhanden.
+
+Die anschließende Schriftumstellung wurde ebenfalls ohne sichtbares Fenster
+geprüft: Laden beim Arbeitsverzeichnis `/tmp`, vorhandene Rahmen- und
+Logozeichen, gleiche Zeichenfortschritte der geprüften Monospace-Zeichen,
+Panelbreiten innerhalb von 640 Pixeln sowie Zeichnen und Navigation durch
+Splashscreen, alle Hauptmenüvorschauen, Spielebibliothek und Snake-Menü bis EXIT.
+Diese Prüfungen waren erfolgreich. Der Benutzer hat anschließend auch die neue
+Schrift unter Omarchy/Linux sichtbar getestet und bestätigt, dass PyCade
+weiterhin funktioniert. Eine Windows-Prüfung steht noch aus.
 
 ## Offene Bereiche
 
@@ -142,8 +181,7 @@ Automatisierte Tests und eine CI-Konfiguration sind noch nicht vorhanden.
 - **Options:** Es gibt nur einen Vorschautext, keine Einstellungsoberfläche oder
   Speicherung. Farbthemen sind im Code definiert.
 - **About:** Es gibt nur einen Vorschautext, keinen eigenen Informationsbildschirm.
-- **Fonts:** Consolas ist fest eingestellt und wird nicht mitgeliefert. Eine
-  verlässliche plattformübergreifende Schriftstrategie fehlt.
 - **Packaging:** `pyproject.toml`, deklarierte Dependencies und ein standardisierter
   Installationsweg fehlen.
-- **Tests:** Automatisierte Tests und Prüfungen auf beiden Zielplattformen fehlen.
+- **Tests:** Eine dauerhaft hinterlegte Testsuite und CI fehlen;
+  eine Windows-Laufzeitprüfung steht aus.
